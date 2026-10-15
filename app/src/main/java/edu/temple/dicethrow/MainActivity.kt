@@ -12,14 +12,26 @@ class MainActivity : AppCompatActivity(), DieFragment.DieRollInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(supportFragmentManager.findFragmentById(R.id.fragmentContainerView) == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .add(
+                    R.id.fragmentContainerView,
+                    DieFragment.newInstance(20)
+                )
+                .commit()
+        }
+
+        findViewById<Button>(R.id.rollDiceButton).apply{
+            setOnClickListener {
+                (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as DieFragment).throwDie()
+            }
+        }
     }
 
     override fun rollDice() {
         (supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as DieFragment)
-            .throwDie()
-        (supportFragmentManager
-            .findFragmentById(R.id.fragmentContainerView2) as DieFragment)
             .throwDie()
     }
 }
